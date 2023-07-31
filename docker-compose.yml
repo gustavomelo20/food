@@ -1,0 +1,38 @@
+version: "3"
+services:
+    # Serviço do PHP
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: laravel_app
+        restart: always
+        ports:
+            - "8000:8000"
+        environment:
+            DB_CONNECTION: mysql
+            DB_HOST: mysql
+            DB_PORT: 3306
+            DB_DATABASE: nome_do_banco
+            DB_USERNAME: usuario_mysql
+            DB_PASSWORD: senha_mysql
+        volumes:
+            - .:/var/www/html
+
+    # Serviço do MySQL
+    mysql:
+        image: mysql:5.7
+        container_name: laravel_mysql
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: sua_senha_root
+            MYSQL_DATABASE: nome_do_banco
+            MYSQL_USER: usuario_mysql
+            MYSQL_PASSWORD: senha_mysql
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql_data:/var/lib/mysql
+
+volumes:
+    mysql_data:
